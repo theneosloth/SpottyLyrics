@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, SafeAreaView, StatusBar } from 'react-native';
+
+import Lyric from '../components/Lyric';
 
 import { getCurrentlyPlaying } from '../api/spotify';
-import { getLyrics } from '../api/lyrics';
+import { getSongLyrics } from '../api/lyrics';
+
 
 export default function LoginScreen() {
 
@@ -13,30 +16,32 @@ export default function LoginScreen() {
   useEffect(() => {
     (async () => {
       const song = await getCurrentlyPlaying();
-      setCurrentSong(song.data.item.name ?? 'Song');
-      setCurrentArtist(song.data.item.artists[0].name ?? 'Artist Unknown');
+      setCurrentSong(song.item.name ?? 'Song');
+      setCurrentArtist(song.item.artists[0].name ?? 'Artist Unknown');
     })();
   });
 
   useEffect(() => {
     (async () => {
-      setLyrics(getLyrics(currentArtist, currentSong));
+      setLyrics(await getSongLyrics(currentArtist, currentSong));
     })();
   }, [currentSong, currentArtist]);
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
-
   return (
-    <View style={styles.container}>
-      <Text>{currentSong} by {currentArtist}</Text>
-      <Text></Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>{currentSong} by {currentArtist}</Text>
+      {lyrics ? <Lyric lyrics={lyrics} /> : <Text>Loading</Text>}
+    </SafeAreaView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  title: {
+    fontSize: 12,
+    textAlign: 'center'
+  }
+});

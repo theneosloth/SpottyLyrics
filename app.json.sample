@@ -28,9 +28,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "spotifylyrics",
-    "extra": {
-      "spotifyClient": "b26133c9e90a47438357f03c3df019b3"
-    }
+    "scheme": "spotifylyrics"
   }
 }

@@ -1,8 +1,18 @@
-import axios from 'axios';
+import { getLyrics } from 'genius-lyrics-api';
 
-export async function getLyrics(artist, title) {
+import Constants from 'expo-constants';
+
+export async function getSongLyrics(artist, title) {
+  const options = {
+    apiKey: Constants.manifest.extra.geniusClient,
+    title: title,
+    artist: artist,
+    optimizeQuery: true
+  }
+
   try {
-    return axios.get(encodeURI(`https://api.lyrics.ovh/v1/${artist}/${title}`));
+    const result = await getLyrics(options);
+    return result;
   }
   catch (err) {
     console.error(err);

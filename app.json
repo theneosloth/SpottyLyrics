@@ -30,7 +30,8 @@
     },
     "scheme": "spotifylyrics",
     "extra": {
-      "spotifyClient": "b26133c9e90a47438357f03c3df019b3"
+      "spotifyClient": "b26133c9e90a47438357f03c3df019b3",
+      "geniusClient": "kmi7jY3Os-uyPMf2fWLVTEe1mfz05Ghc_0QPD1UR2jNX1pCZYcooyuYaS5E3cixr"
     }
   }
 }

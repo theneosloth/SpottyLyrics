@@ -1,7 +1,8 @@
-import React, {useEffect } from 'react';
-import { StyleSheet, Button, View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
+import { Entypo } from '@expo/vector-icons';
 
 import Constants from 'expo-constants';
 
@@ -12,7 +13,7 @@ const discovery = {
   tokenEndpoint: 'https://accounts.spotify.com/api/token',
 };
 
-export default function LoginScreen({ saveToken }) {
+export default function LoginScreen({ navigation, saveToken }) {
 
 
   const [request, response, promptAsync] = useAuthRequest(
@@ -38,6 +39,7 @@ export default function LoginScreen({ saveToken }) {
     if (response?.type === 'success') {
       const { access_token } = response.params;
       saveToken('API_TOKEN', access_token);
+      navigation.navigate('Lyrics');
     }
   }, [response])
 
@@ -49,17 +51,27 @@ export default function LoginScreen({ saveToken }) {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    button: {
+      padding: 10,
+      alignItems: 'center',
+    },
+    header: {
+      fontSize: 20,
+      paddingBottom: 30
+
+    }
   });
 
   return (
     <View style={styles.container}>
-      <Text>Please Log In</Text>
-      <Button
-        disabled={!request}
-        title="Login"
+      <Text style={styles.header}>Please Log In</Text>
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => {
           promptAsync({ useProxy: true });
-        }} />
+        }} >
+        <Entypo name="login" size={24} color="black" />
+      </TouchableOpacity>
     </View>
   )
 }

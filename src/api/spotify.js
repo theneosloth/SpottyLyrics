@@ -12,7 +12,12 @@ const getAuthHeader = async () => {
 
 export async function getCurrentlyPlaying() {
   const headers = await getAuthHeader();
-  return axios.get('https://api.spotify.com/v1/me/player/currently-playing', {
-    headers: headers
-  });
+  try {
+    const result = axios.get('https://api.spotify.com/v1/me/player/currently-playing?market=CA', {
+      headers: headers
+    });
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
 }

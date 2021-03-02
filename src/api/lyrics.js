@@ -15,6 +15,6 @@ export async function getSongLyrics(artist, title) {
     return result;
   }
   catch (err) {
-    console.error(err);
+    console.error('Genius error', err);
   }
 }

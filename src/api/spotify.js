@@ -18,6 +18,6 @@ export async function getCurrentlyPlaying() {
     });
     return result.data;
   } catch (err) {
-    console.error(err);
+    console.error('Spotify error', err);
   }
 }

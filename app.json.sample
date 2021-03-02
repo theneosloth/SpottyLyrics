@@ -28,6 +28,10 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "spotifylyrics"
+    "scheme": "spotifylyrics",
+    "extra": {
+      "spotifyClient": "",
+      "geniusClient": ""
+    }
   }
 }

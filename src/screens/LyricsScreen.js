@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, StatusBar, ImageBackground } from 'react-native';
 
 
-import Lyric from '../components/Lyric';
+import Lyrics from '../components/Lyrics/Lyrics';
 
 import { getCurrentlyPlaying } from '../api/spotify';
 import { getSongLyrics } from '../api/lyrics';
@@ -10,17 +10,20 @@ import { getSongLyrics } from '../api/lyrics';
 
 export default function LyricsScreen() {
 
+  const defaultPic = require('../../img/background.jpg');
+
+
   const [currentSong, setCurrentSong] = useState('');
   const [currentArtist, setCurrentArtist] = useState('');
   const [lyrics, setLyrics] = useState('');
-  const [background, setBackground] = useState(require('../../img/background.jpg'));
+  const [background, setBackground] = useState({});
 
 
   const fetchSong = async () => {
     const song = await getCurrentlyPlaying();
-    setCurrentSong(song.item?.name ?? 'Song');
-    setCurrentArtist(song.item?.artists?.[0].name ?? 'Artist Unknown');
-    setBackground({uri: song.item?.album?.images?.[0].url} ?? '');
+    setCurrentSong(song.item?.name);
+    setCurrentArtist(song.item?.artists?.[0].name);
+    setBackground({ uri: song.item?.album?.images?.[0].url } ?? defaultPic);
 
   }
 
@@ -31,17 +34,26 @@ export default function LyricsScreen() {
   }, []);
 
   useEffect(() => {
+    setLyrics('');
     (async () => {
-      setLyrics(await getSongLyrics(currentArtist, currentSong));
+      if (!!currentArtist && !!currentSong) {
+        setLyrics(await getSongLyrics(currentArtist, currentSong));
+      }
     })();
   }, [currentSong, currentArtist]);
 
   return (
     <SafeAreaView style={styles.container}>
+      <ImageBackground source={background}
+        style={{ width: '100%', height: '100%', backgroundColor: 'rgb(0,0,0)' }}
+        resizeMode="cover"
+        imageStyle={{ opacity: 0.3 }} >
+        <Text style={styles.title}>{currentSong ?? 'No Song Found'} by {currentArtist ?? 'Pull Down To Refresh'}</Text>
+        <Lyrics
+          onRefresh={() => fetchSong()}
+          lyrics={lyrics}
+          styles={styles} />
 
-      <ImageBackground source={background} style={{ width: '100%', height: '100%', backgroundColor: 'rgb(0,0,0)' }} resizeMode="cover" imageStyle={{ opacity: 0.3 }} >
-        <Text style={styles.title}>{currentSong} by {currentArtist}</Text>
-        {lyrics ? <Lyric lyrics={lyrics} styles={styles} /> : <Text>Loading</Text>}
       </ImageBackground>
     </SafeAreaView>
   )

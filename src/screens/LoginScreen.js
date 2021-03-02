@@ -6,8 +6,6 @@ import { Entypo } from '@expo/vector-icons';
 
 import Constants from 'expo-constants';
 
-import { save } from '../api/storage';
-
 WebBrowser.maybeCompleteAuthSession();
 
 const discovery = {
@@ -15,8 +13,7 @@ const discovery = {
   tokenEndpoint: 'https://accounts.spotify.com/api/token',
 };
 
-export default function LoginScreen({ route, navigation}) {
-  const {saveToken} = route.params;
+export default function LoginScreen({ saveToken, navigation}) {
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -40,7 +37,7 @@ export default function LoginScreen({ route, navigation}) {
   useEffect(() => {
     if (response?.type === 'success') {
       const { access_token } = response.params;
-      save('API_TOKEN', access_token);
+      saveToken('API_TOKEN', access_token);
       navigation.navigate('Lyrics');
     }
   }, [response])

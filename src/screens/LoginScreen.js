@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
 import { Entypo } from '@expo/vector-icons';
 
 import Constants from 'expo-constants';
+import { AuthContext } from '../context/AuthContext';
+
+// Could be brought up into the main component
+import { save } from '../api/storage';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -13,7 +17,9 @@ const discovery = {
   tokenEndpoint: 'https://accounts.spotify.com/api/token',
 };
 
-export default function LoginScreen({ saveToken, navigation}) {
+export default function LoginScreen({ navigation}) {
+
+  const { setToken } = useContext(AuthContext)
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -37,7 +43,8 @@ export default function LoginScreen({ saveToken, navigation}) {
   useEffect(() => {
     if (response?.type === 'success') {
       const { access_token } = response.params;
-      saveToken('API_TOKEN', access_token);
+      setToken(access_token);
+      save('API_TOKEN', access_token);
       navigation.navigate('Lyrics');
     }
   }, [response])

@@ -10,7 +10,7 @@ import { getSongLyrics } from '../api/lyrics';
 
 export default function LyricsScreen() {
 
-  const defaultPic = require('../../img/background.jpg');
+  const defaultPic = require('../../assets/background.jpg');
 
 
   const [currentSong, setCurrentSong] = useState('');
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 30,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
     justifyContent: 'center',
     fontWeight: 'bold',
     color: '#FFFFFF'

@@ -1,20 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Text, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
+
+import Clipboard from 'expo-clipboard';
+import * as Haptics from 'expo-haptics';
 
 export default function Lyric({ lyrics, styles, onRefresh }) {
 
   const flatListRef = useRef();
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const Line = ({ item, index }) => {
 
-  const Line = ({ item, index }) => (
-    <TouchableOpacity onPress={
-      () => {
-        flatListRef.current.scrollToIndex({ index: index, viewPosition: 0.5 });
+    const onLineHold = () => {
+      Clipboard.setString(item);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
+
+    return (
+      <TouchableOpacity onPress={
+        () => {
+          flatListRef.current.scrollToIndex({ index: index, viewPosition: 0.5 });
+        }
       }
-    }>
-      <Text style={styles.item}>{item}</Text>
-    </TouchableOpacity>);
+        onLongPress={onLineHold}>
+        <Text style={styles.item}>{item}</Text>
+      </TouchableOpacity>)
+  };
 
   const Refresh = () => {
 

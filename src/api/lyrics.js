@@ -9,12 +9,7 @@ export async function getSongLyrics(artist, title) {
     artist: artist,
     optimizeQuery: true
   }
+  const result = await getLyrics(options);
+  return result;
 
-  try {
-    const result = await getLyrics(options);
-    return result;
-  }
-  catch (err) {
-    console.error('Genius error', err);
-  }
 }

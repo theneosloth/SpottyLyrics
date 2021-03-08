@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, StatusBar, ImageBackground } from 'react-native';
 
-
 import Lyrics from '../components/Lyrics/Lyrics';
 
 import { getCurrentlyPlaying } from '../api/spotify';
 import { getSongLyrics } from '../api/lyrics';
 
 
-export default function LyricsScreen({navigation}) {
+export default function LyricsScreen({ navigation }) {
 
   const defaultPic = require('../../assets/background.jpg');
 
@@ -44,7 +43,11 @@ export default function LyricsScreen({navigation}) {
     setLyrics('');
     (async () => {
       if (!!currentArtist && !!currentSong) {
-        setLyrics(await getSongLyrics(currentArtist, currentSong));
+        try {
+          setLyrics(await getSongLyrics(currentArtist, currentSong));
+        } catch (error) {
+          setLyrics('Lyrics could not be loaded.');
+        }
       }
     })();
   }, [currentSong, currentArtist]);

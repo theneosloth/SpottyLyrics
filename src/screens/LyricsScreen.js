@@ -8,7 +8,7 @@ import { getCurrentlyPlaying } from '../api/spotify';
 import { getSongLyrics } from '../api/lyrics';
 
 
-export default function LyricsScreen() {
+export default function LyricsScreen({navigation}) {
 
   const defaultPic = require('../../assets/background.jpg');
 
@@ -20,10 +20,17 @@ export default function LyricsScreen() {
 
 
   const fetchSong = async () => {
-    const song = await getCurrentlyPlaying();
-    setCurrentSong(song.item?.name);
-    setCurrentArtist(song.item?.artists?.[0].name);
-    setBackground({ uri: song.item?.album?.images?.[0].url } ?? defaultPic);
+    try {
+
+      const song = await getCurrentlyPlaying();
+      setCurrentSong(song.item?.name);
+      setCurrentArtist(song.item?.artists?.[0].name);
+      setBackground({ uri: song.item?.album?.images?.[0].url } ?? defaultPic);
+    }
+    catch (error) {
+      //Handle more later
+      navigation.navigate('Login');
+    }
 
   }
 

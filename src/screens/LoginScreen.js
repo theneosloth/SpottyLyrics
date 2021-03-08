@@ -5,10 +5,10 @@ import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session
 import { Entypo } from '@expo/vector-icons';
 
 import Constants from 'expo-constants';
-import { AuthContext } from '../context/AuthContext';
+import AuthContext from '../context/AuthContext';
 
 // Could be brought up into the main component
-import { save } from '../api/storage';
+import { save, deleteValue } from '../api/storage';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -46,6 +46,8 @@ export default function LoginScreen({ navigation}) {
       setToken(access_token);
       save('API_TOKEN', access_token);
       navigation.navigate('Lyrics');
+    } else {
+      //
     }
   }, [response])
 

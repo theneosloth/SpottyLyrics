@@ -12,12 +12,8 @@ const getAuthHeader = async () => {
 
 export async function getCurrentlyPlaying() {
   const headers = await getAuthHeader();
-  try {
-    const result = await axios.get('https://api.spotify.com/v1/me/player/currently-playing?market=CA', {
-      headers: headers
-    });
-    return result.data;
-  } catch (err) {
-    console.error('Spotify error', err);
-  }
+  const result = await axios.get('https://api.spotify.com/v1/me/player/currently-playing?market=CA', {
+    headers: headers
+  });
+  return result?.data
 }
